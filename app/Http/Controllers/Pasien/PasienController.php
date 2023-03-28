@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Obat;
+use App\Models\Pemeriksaan;
 use Illuminate\Support\Facades\App;
 use PDF;
 
@@ -25,7 +26,8 @@ class PasienController extends Controller
   {
     $perjanjians = Perjanjian::with('pasien')->where('pasien_id', Auth::user()->id)->get();
     $data  = [
-      'pasiens' => $perjanjians
+      'pasiens' => $perjanjians,
+      'active' => 'daftar-pasien'
     ];
     return view('pasien.index', $data);
   }
@@ -38,8 +40,15 @@ class PasienController extends Controller
   public function create()
   {
     $dokter = Dokter::all();
+    $pasien = Pasien::all();
+    // $perjanjian = Perjanjian::all();
+    $obat = Obat::all();
     $data  = [
-      'dokters' => $dokter
+      'dokters' => $dokter,
+      'pasiens' => $pasien,
+      // 'perjanjians' => $perjanjian,
+      'obats' => $obat,
+      'active' => 'dashboard',
     ];
     return view('pasien.create', $data);
   }
@@ -50,13 +59,24 @@ class PasienController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(PasienRequest $request)
+  public function store(Request $request)
   {
-    $validatedData = $request->all();
-    // dd($validatedData);
-    $validatedData['tgl_datang'] = Carbon::now();
-    Pasien::create($validatedData);
-    return redirect()->route('dokter.index');
+      $request->validate([
+        'no_telp' => 'required|numeric|digits:12'
+    ]);
+
+    $input = $request->all();
+    $pasien = Pasien::create($input);
+    // $validatedData['tgl_datang'] = Carbon::now();
+
+    return redirect()->route('home');
+    return back()->with('success', 'User created successfully.');
+
+    // $validatedData = $request->all();
+    // $validatedData['tgl_datang'] = Carbon::now();
+    // Pasien::create($validatedData);
+
+    // return redirect()->route('home');
   }
 
   /**
@@ -65,12 +85,16 @@ class PasienController extends Controller
    * @param  \App\Models\Pasien  $pasien
    * @return \Illuminate\Http\Response
    */
+
   public function show(Pasien $pasien)
   {
-    $data = [
-      'pasien' => $pasien
-    ];
-    return view('dokter.show', $data);
+    // $pasiens = Pasien::all();
+    // $pasien = Pasien::with('nama_pasien')->where('dokter_id', Auth::user()->id)->get();
+    // $data = [
+    //   'pasiens' => $pasien,
+    // ];
+
+    // return view('dokter.show', $data);
   }
 
   /**
@@ -81,14 +105,16 @@ class PasienController extends Controller
    */
   public function edit(Pasien $pasien)
   {
-    $dokters = Dokter::all();
-    $obats = Obat::all();
+    $pasien = Pasien::all();
+    $dokter = Dokter::all();
+    $obat = Obat::all();
     $data = [
       'pasien' => $pasien,
-      'obats' => $obats,
-      'dokters' => $dokters
+      'obats' => $obat,
+      'dokters' => $dokter,
+      'active' => 'dokter'
     ];
-    return view('dokter.edit', $data);
+    return view('pasien.edit', $data);
   }
 
   /**
@@ -104,8 +130,10 @@ class PasienController extends Controller
     $validatedData['tgl_datang'] = $pasien->tgl_datang;
     // return $validatedData;
     $pasien->update($validatedData);
-    return redirect()->route('dokter.index');
+
+    return redirect()->route('pasien.update');
   }
+  
 
   /**
    * Remove the specified resource from storage.
@@ -113,24 +141,27 @@ class PasienController extends Controller
    * @param  \App\Models\Pasien  $pasien
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Pasien $pasien)
+  public function destroy(Pasien $pasien, Pemeriksaan $pemeriksaan)
   {
-    $perjanjian = Perjanjian::where('nama_pasien', $pasien->nama_pasien)->delete();
+    // $perjanjian = Perjanjian::where('id', $pasien->nama_pasien)->delete();
     $pasien->delete();
-    return redirect()->route('pasien.index');
+    // $pemeriksaan->delete();
+    return redirect()->route('home');
   }
 
-  public function generatePDF(Pasien $pasien)
+  public function generatePDF(Pasien $pasien, Pemeriksaan $pemeriksaan)
   {
     $dataPasien = Pasien::with('dokter')->where('nama_pasien', $pasien->nama_pasien)->get();
-    // $data = [
-    //   'pasiens' => $dataPasien
-    // ];
-    // return view('cetak-pasien', $data);
-    // dd($dataPasien);
+    // $dataPemeriksaan = Pemeriksaan::with('dokter')->where('pasien_id', $pemeriksaan->pasien_id)->get();
+    $data = [
+      'pasiens' => $dataPasien,
+      // 'pemeriksaans' => $dataPemeriksaan
+    ];
+    return view('cetak-pasien', $data);
+    dd($dataPasien);
     $data = $dataPasien;
     view()->share('pasiens', $data);
-    $pdf = PDF::loadView('cetak-pasien', $data);
-    return $pdf->download($pasien->nama_pasien . '.pdf');
+    // $pdf = PDF::loadView('cetak-pasien', $data);
+    // return $pdf->download($pasien->nama_pasien . '.pdf');
   }
 }

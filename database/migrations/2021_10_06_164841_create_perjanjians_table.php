@@ -18,11 +18,10 @@ class CreatePerjanjiansTable extends Migration
       $table->string('nama_pasien');
       $table->string('nama_dokter');
       $table->string('spesialiasi_dokter');
+      $table->string('tgl_perjanjian');
       $table->string('waktu_perjanjian');
       $table->unsignedBigInteger('pasien_id');
-      // $table->unsignedBigInteger('dokter_id');
       $table->foreign('pasien_id')->references('id')->on('users')->onDelete('cascade');
-      // $table->foreign('dokter_id')->references('id')->on('users');
       $table->timestamps();
     });
   }

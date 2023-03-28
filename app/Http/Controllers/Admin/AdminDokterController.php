@@ -18,7 +18,8 @@ class AdminDokterController extends Controller
   {
     $dokter = Dokter::all();
     $data = [
-      'dokters' => $dokter
+      'dokters' => $dokter,
+      'active' => 'dokter'
     ];
     return view('admin.dokter.index', $data);
   }
@@ -30,7 +31,10 @@ class AdminDokterController extends Controller
    */
   public function create()
   {
-    return view('admin.dokter.create');
+    $data = [
+      'active' => 'dokter'
+    ];
+    return view('admin.dokter.create', $data);
   }
 
   /**
@@ -41,9 +45,18 @@ class AdminDokterController extends Controller
    */
   public function store(DokterRequest $request)
   {
-    $validatedData = $request->all();
-    $dokter = Dokter::create($validatedData);
-    return redirect()->route('admin-dokter.index');
+    $request->validate([
+      'no_telp' => 'required|numeric|digits:12'
+    ]);
+
+    $input = $request->all();
+    $dokter = Dokter::create($input);
+
+    return back()->with('success', 'User created successfully.');
+
+    // $validatedData = $request->all();
+    // $dokter = Dokter::create($validatedData);
+    // return redirect()->route('admin-dokter.index');
   }
 
   /**
@@ -66,7 +79,8 @@ class AdminDokterController extends Controller
   public function edit(Dokter $admin_dokter)
   {
     $data = [
-      'dokter' => $admin_dokter
+      'dokter' => $admin_dokter,
+      'active' => 'admin.dokter'
     ];
     return view('admin.dokter.edit', $data);
   }

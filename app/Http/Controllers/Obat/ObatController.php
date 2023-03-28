@@ -20,7 +20,8 @@ class ObatController extends Controller
   {
     $obat = Obat::all();
     $data = [
-      'obats' => $obat
+      'obats' => $obat,
+      'active' => 'obat'
     ];
     if (Auth::user()->role == 'admin') {
       return view('admin.obat.index', $data);
@@ -35,7 +36,10 @@ class ObatController extends Controller
    */
   public function create()
   {
-    return view('admin.obat.create');
+    $data = [
+      'active' => 'obat.create'
+    ];
+    return view('admin.obat.create', $data);
   }
 
   /**
@@ -71,7 +75,8 @@ class ObatController extends Controller
   public function edit(Obat $obat, Request $request)
   {
     $data = [
-      'obat' => $obat
+      'obat' => $obat,
+      'active' => 'obat.edit'
     ];
     return view('admin.obat.edit', $data);
   }

@@ -1,0 +1,126 @@
+.accordion {
+  width: 100%x;
+  margin: 40px auto;
+  color: black;
+}
+
+.accordion .container {
+  position: relative;
+}
+
+.accordion .label {
+  position: relative;
+  padding: 5px 0;
+  font-size: 23px;
+  color: black;
+  cursor: pointer;
+}
+
+.accordion .label::before {
+  content: '+';
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  font-size: 30px;
+  transform: translateY(-50%);
+}
+
+.accordion .content {
+  position: relative;
+  height: 0;
+  font-size: 20px;
+  text-align: justify;
+  width: auto;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.accordion hr {
+  width: 100%;
+  margin-left: 0;
+  border: 1px solid rgb(212, 212, 212);
+}
+
+.accordion .container.active .content {
+  height: 150px;
+}
+
+.accordion .container.active .label::before {
+  content: '-';
+  font-size: 30px;
+}
+
+/* hero */
+#nav-menu {
+  font-family: 'poppins';
+  font-weight: bold;
+}
+
+.sec-satu {
+  font-family: 'Aladin', cursive;
+  font-size: 50px;
+}
+
+.sec-2-sub {
+  font-family: 'Advent Pro', sans-serif;
+  font-size: 20px;
+}
+
+
+/* solusi */
+
+.solusi {
+  width: 80%;
+  padding: 15px;
+  margin-bottom: 20px;
+  margin-left: 45px;
+}
+.solusi2 {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  margin-left: 45px;
+}
+
+.img-solusi {
+  align-items: center;
+  margin-left: 38%;
+}
+
+.text-solusi {
+  text-align: center;
+}
+
+.solusi-center {
+  width: 1600px;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .solusi {
+    padding: 20px;
+    width: 400px;
+    margin: 20px;
+  }
+
+  .solusi2 {
+    position: relative;
+    top: 750px;
+    right: 460px;
+    margin-right: 180px;
+  }
+
+  /* .solusi-center {
+    z-index: -999;
+  } */
+}
+
+/* faq */
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  #about {
+    margin-top: 800px;
+  }
+}

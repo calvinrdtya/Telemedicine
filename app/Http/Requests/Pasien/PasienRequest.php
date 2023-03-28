@@ -28,6 +28,7 @@ class PasienRequest extends FormRequest
       'alamat_pasien' => 'required',
       'keluhan_pasien' => 'required',
       'no_telp' => 'required',
+      'tgl_datang' => 'required',
       'dokter_id' => 'required',
       // 'nama_obat' => 'required'
     ];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dokter;
 use App\Models\Obat;
 use App\Models\Dokter;
 use App\Models\Pasien;
+use App\Models\Pemeriksaan;
 use App\Models\Perjanjian;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,12 +20,15 @@ class DokterController extends Controller
    */
   public function index()
   {
+    $pasien = Pasien::all();
+    $dokter = Dokter::all();
     // $pasien = Pasien::with(['dokter'])->get();
-    $pasien = Dokter::with('pasiens')->where('nama_dokter', Auth::user()->name)->get()->collect();
+    // $pasien = Dokter::with('pasiens')->where('nama_dokter', Auth::user()->name)->get()->collect();
     $obat = Obat::with('pasien')->get();
     $data = [
       'pasiens' => $pasien,
-      'obats' => $obat
+      'dokters' => $dokter,
+      'active' => 'dokter'
     ];
     return view('dokter.index', $data);
   }
@@ -42,7 +46,8 @@ class DokterController extends Controller
     $data = [
       'dokters' => $dokters,
       'perjanjians' => $perjanjian,
-      'obats' => $obats
+      'obats' => $obats,
+      'active' => 'dokter.create'
     ];
     return view('dokter.create', $data);
   }
@@ -54,7 +59,7 @@ class DokterController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    
   }
 
   /**
@@ -65,7 +70,12 @@ class DokterController extends Controller
    */
   public function show(Dokter $dokter)
   {
-    //
+    $pasien = Pasien::with('pasien')->where('dokter_id', Auth::user()->id)->get();
+    $data = [
+      'pasiens' => $pasien,
+    ];
+
+    return view('dokter.show', $data);
   }
 
   /**

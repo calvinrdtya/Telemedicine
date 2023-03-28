@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UserRequest;
 use App\Models\User;
+use App\Models\Obat;
+use App\Models\Pasien;
+use App\Models\Perjanjian;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\User\UserRequest;
 
 class AdminController extends Controller
 {
@@ -16,9 +21,17 @@ class AdminController extends Controller
    */
   public function index()
   {
+    // $perjanjians = Perjanjian::with('pasien')->where('pasien_id', Auth::user()->id)->get();
+    // $data  = [
+    //   'pasiens' => $perjanjians
+    // ];
+    // return view('home', $data);
+
     $user = User::all();
     $data = [
-      'users' => $user
+      'users' => $user,
+      'active' => 'user'
+      // 'pasiens' => $pasien
     ];
     return view('admin.pasien.index', $data);
   }
@@ -30,7 +43,10 @@ class AdminController extends Controller
    */
   public function create()
   {
-    return view('admin.pasien.create');
+    $data = [
+      'active' => 'admin.create'
+    ];
+    return view('admin.pasien.create', $data);
   }
 
   /**
@@ -69,7 +85,8 @@ class AdminController extends Controller
   {
     $users = User::find($id);
     $data = [
-      'user' => $users
+      'user' => $users,
+      'active' => 'admin.edit'
     ];
     return view('admin.pasien.edit', $data);
   }

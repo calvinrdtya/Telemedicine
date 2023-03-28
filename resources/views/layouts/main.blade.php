@@ -9,163 +9,174 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>E-Klinik</title>
+  <title>V-Medika</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+  {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> --}}
+
+  {{-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> --}}
 
   <!-- Custom fonts for this template-->
   <link href="{{ asset('css/all.min.css') }}" rel="stylesheet">
+  {{-- <link href="{{ asset('css/jquery-ui.css') }}" rel="stylesheet">
+  <link href="{{ asset('js/jquery-ui.js') }}" rel="stylesheet"> --}}
+  {{-- <link href="{{ asset('css/style.css') }}" rel="stylesheet"> --}}
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/fontawesome.min.css" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
   <link href="{{ asset('css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
+  <style>
+    .bg {
+      background-color: #0bbba6;
+    }
+  </style>
 </head>
 
 <body id="page-top">
-  <!-- Page Wrapper -->
   <div id="wrapper">
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-      <!-- Sidebar - Brand -->
+    <ul class="navbar-nav bg sidebar sidebar-dark accordion" id="accordionSidebar">
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
         <div class="sidebar-brand-icon">
           <i class="fas fa-hospital-user"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">E-Klinik<sup></sup></div>
+        <div class="sidebar-brand-text mx-3">V-Medika<sup></sup></div>
       </a>
-      <!-- Divider -->
       <hr class="sidebar-divider my-0">
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{{ route('home') }}">
-          <i class="fas fa-chart-line"></i>
+      @if (Auth::user()->role === 'admin')
+      <li class="nav-item {{ ($active === "dashboard") ? 'active' : '' }}">
+        <a class="nav-link pb-0" href="{{ route('home') }}">
+          <i class="fas fa-sort-amount-up-alt"></i>
           <span>Dashboard</span></a>
       </li>
-      <!-- Divider -->
+      <li class="nav-item {{ ($active === "pegawai") ? 'active' : '' }}">
+        <a class="nav-link pb-0" href="{{ route('pegawai.index') }}">
+          <i class="fas fa-users"></i>
+          <span>Pegawai</span></a>
+      </li>
+      <li class="nav-item {{ ($active === "profil") ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('poliklinik.index') }}">
+          <i class="fas fa-bars"></i>
+          <span>Profil Poliklinik</span></a>
+      </li>
+      {{-- <li class="nav-item {{ ($active === "setting") ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('home') }}">
+          <i class="fas fa-user-cog"></i>
+          <span>Setting</span></a>
+      </li> --}}
       <hr class="sidebar-divider">
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Menu
-      </div>
-      @if (Auth::user()->role == 'dokter')
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-          aria-controls="collapseTwo">
+      <div class="sidebar-heading text-light">Data Pasien</div>
+      <li class="nav-item {{ ($active === "perjanjian") ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('praktek.index') }}">
           <i class="fas fa-user-injured"></i>
-          <span>Pasien</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Action</h6>
-            <a class="collapse-item" href="{{ route('dokter.index') }}">Daftar Pasien</a>
-            <a class="collapse-item" href="{{ route('dokter.create') }}">Tambah Pasien</a>
-          </div>
-        </div>
+          <span>Konsultasi Pasien</span></a>
       </li>
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          aria-expanded="true" aria-controls="collapseUtilities">
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading text-light">Data Dokter</div>
+
+      <li class="nav-item {{ ($active === "dokter") ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin-dokter.index') }}">
+          <i class="fas fa-fw fas fa-user-md"></i>
+          <span>Dokter</span></a>
+      </li>
+
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading text-light">Data Pegawai</div>
+   
+      <li class="nav-item {{ ($active === "user") ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.index') }}">
+          <i class="fas fa-user-tag"></i>
+          <span>User</span></a>
+      </li>
+
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading text-light">Data Obat</div>
+
+      <li class="nav-item {{ ($active === "obat") ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('obat.index') }}">
           <i class="fas fa-tablets"></i>
-          <span>Obat</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Action</h6>
-            <a class="collapse-item" href="{{ route('obat.index') }}">Daftar Obat</a>
-          </div>
-        </div>
+          <span>Obat</span></a>
       </li>
       @endif
 
-      @if (Auth::user()->role == 'pasien')
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-user-injured"></i> <span>Pasien</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Action</h6>
-            <a class="collapse-item" href="{{ route('pasien.index') }}">Riwayat Berobat</a>
-          </div>
-        </div>
-      </li>
-      @endif
 
-      @if (Auth::user()->role == 'admin')
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-          aria-controls="collapseTwo">
-          <i class="fas fa-fw fas fa-user-md"></i></fas>
-          <span>Dokter</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Action</h6>
-            <a class="collapse-item" href="{{ route('admin-dokter.index') }}">Daftar Dokter</a>
-            <a class="collapse-item" href="{{ route('admin-dokter.create') }}">Tambah Dokter</a>
-          </div>
-        </div>
+      @if (Auth::user()->role === 'dokter')
+      {{-- <li class="nav-item {{ ($active === "pasien") ? 'active' : '' }}">
+        <a class="nav-link pb-0" href="{{ route('janji.index') }}">
+          <i class="fas fa-sort-amount-up-alt"></i>
+          <span>Pasien</span></a>
+      </li> --}}
+      <li class="nav-item {{ ($active === "dashboard") ? 'active' : '' }}">
+        <a class="nav-link pb-0" href="{{ route('home') }}">
+          <i class="fas fa-sort-amount-up-alt"></i>
+          <span>Pasien</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-users"></i>
-          <span>User</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Action</h6>
-            <a class="collapse-item" href="{{ route('admin.index') }}">Daftar User</a>
-            <a class="collapse-item" href="{{ route('admin.create') }}">Tambah User</a>
-          </div>
-        </div>
+      <li class="nav-item {{ ($active === "perjanjian") ? 'active' : '' }}">
+        <a class="nav-link pb-0" href="{{ route('praktek.index') }}">
+          <i class="fas fa-user-injured"></i>
+          <span>Konsultasi</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-          aria-controls="collapsePages">
+      {{-- <li class="nav-item {{ ($active === "jadwal") ? 'active' : '' }}">
+        <a class="nav-link pb-0" href="jadwal_praktek/jadwal">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Jadwal Praktek</span></a>
+      </li> --}}
+      <li class="nav-item {{ ($active === "obat") ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('obat.index') }}">
           <i class="fas fa-tablets"></i>
-          <span>Obat</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Actions</h6>
-            <a class="collapse-item" href="{{ route('obat.index') }}">Daftar Obat</a>
-            <a class="collapse-item" href="{{ route('obat.create') }}">Tambah Obat</a>
-          </div>
-        </div>
+          <span>Obat</span></a>
       </li>
       @endif
 
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
+      @if (Auth::user()->role === 'pasien')
+      <li class="nav-item {{ ($active === "perjanjian") ? 'active' : '' }}">
+        <a class="nav-link pb-0" href="{{ route('praktek.index') }}">
+          <i class="fas fa-user-injured"></i>
+          <span>Konsultasi</span></a>
+      </li>
+      <li class="nav-item {{ ($active === "dokter") ? 'active' : '' }}">
+        <a class="nav-link pb-0" href="{{ route('daftar-dokter.index') }}">
+          <i class="fas fa-user-injured"></i>
+          <span>Daftar Dokter</span></a>
+      </li>
+      {{-- <li class="nav-item {{ ($active === "jadwal") ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('jadwal_praktek.index') }}">
+          <i class="fas fa-user-injured"></i>
+          <span>Jadwal Konsultasi</span></a>
+      </li> --}}
+      @endif
+
+      {{-- <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle">
         </button>
-      </div>
+      </div> --}}
     </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
       @yield('content')
-      <!-- Footer -->
+      @if (Auth::user()->role == 'admin')
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; E-Klinik 2021</span>
+            <span>Copyright &copy; VMedika 2023</span>
           </div>
         </div>
       </footer>
-      <!-- End of Footer -->
+      @endif
     </div>
-    <!-- End of Content Wrapper -->
   </div>
-  <!-- End of Page Wrapper -->
-  <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
@@ -184,5 +195,27 @@
   <!-- Page level custom scripts -->
   <script src="{{ asset('js/datatables-demo.js') }}"></script>
 </body>
-
 </html>
+
+
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Ready to leave?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <form action="{{ route('logout') }}" method="POST">
+          @method('logout')
+          @csrf
+        <button class="btn btn-danger">Logout</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dokter;
 use App\Models\Obat;
+use App\Models\Dokter;
 use App\Models\Pasien;
 use App\Models\Perjanjian;
+use App\Models\Pemeriksaan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -28,15 +30,23 @@ class HomeController extends Controller
    */
   public function index()
   {
-    $pasien = Pasien::all()->collect()->count();
-    $dokter = Dokter::all()->collect()->count();
-    $obat =  Obat::all()->collect()->count();
-    $perjanjian = Perjanjian::where('nama_dokter', Auth::user()->name)->get();
+    $pasien = Pasien::all();
+    $perjanjian = Perjanjian::all();
+    $p = Pasien::count();
+    $dokter = Dokter::count();
+    $obat =  Obat::count();
+    // $perjanjian = Perjanjian::where('nama_dokter', Auth::user()->name)->get();
+    $pemeriksaan = Pemeriksaan::where('no_pemeriksaan', Auth::user()->name)->get();
     $data = [
-      'pasien' => $pasien,
-      'dokter' => $dokter,
-      'obat' => $obat,
-      'perjanjians' => $perjanjian
+      'pasiens' => $pasien,
+      'pasien' => $p,
+      'dokters' => $dokter,
+      'obats' => $obat,
+      'perjanjians' => $perjanjian,
+      'pemeriksaans' => $pemeriksaan,
+      // 'active' => 'home',
+      'active' => 'dashboard',
+      // 'active' => 'perjanjian'
     ];
     return view('home', $data);
   }

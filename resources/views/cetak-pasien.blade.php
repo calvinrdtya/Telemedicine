@@ -4,11 +4,12 @@
 <head>
   <meta charset="utf-8">
   <title>Data Pasien</title>
-  {{-- <link rel="stylesheet" href="{{ asset('css/style.css') }}" media="all" /> --}}
-  {{-- <style>
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}" media="all" />
+  <style>
     .clearfix:after {
       content: "";
       display: table;
+      /* width: 100%; */
       clear: both;
     }
 
@@ -18,7 +19,8 @@
     }
 
     body {
-      position: relative;
+      margin-left: 30px;
+      /* position: relative; */
       width: 21cm;
       height: 29.7cm;
       margin: 0 auto;
@@ -31,7 +33,7 @@
 
     header {
       padding: 10px 0;
-      margin-bottom: 30px;
+      /* margin-bottom: 30px; */
     }
 
     #logo {
@@ -125,7 +127,6 @@
 
     table td.grand {
       border-top: 1px solid #5D6975;
-      ;
     }
 
     #notices .notice {
@@ -136,26 +137,27 @@
     footer {
       color: #5D6975;
       width: 100%;
-      height: 30px;
-      position: absolute;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      /* height: 30px; */
+      position: relative;
       bottom: 0;
       border-top: 1px solid #C1CED9;
-      padding: 8px 0;
+      /* padding: 8px 0; */
       text-align: center;
     }
-  </style> --}}
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </style>
+  {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> --}}
 </head>
 
-<body>
+<body class="mx-auto">
   <header class="clearfix">
-    <h1>E-Klinik</h1>
+    <h1>V-Medika</h1>
     <div id="company" class="clearfix">
       <div>Rekam Medis</div>
-      <div>Jalan Asia Afrika 12</div>
+      <div>Trenggalek</div>
       <div>(602) 519-0450</div>
-      <div><a>e-klinik@email.com</a></div>
+      <div><a>v-medika@email.com</a></div>
     </div>
     <br>
   </header>
@@ -164,10 +166,11 @@
       <thead class="thead-light">
         <tr>
           <th scope="col">Nama Pasien</th>
-          <th scope="col">Alamat Pasien</th>
+          <th scope="col">Alamat</th>
           <th scope="col">Tanggal Berobat</th>
           <th scope="col">Keluhan</th>
           <th scope="col">Nama Dokter</th>
+          {{-- <th scope="col">Obat</th> --}}
         </tr>
       </thead>
       <tbody>
@@ -175,9 +178,10 @@
         <tr>
           <td>{{ $pasien->nama_pasien }}</td>
           <td>{{ $pasien->alamat_pasien }}</td>
-          <td>{{ $pasien->tgl_datang }}</td>
+          <td>{{ $pasien->created_at }}</td>
           <td>{{ $pasien->keluhan_pasien }}</td>
           <td>{{ $pasien->dokter->nama_dokter }}</td>
+          {{-- <td>{{ $pasien->pemeriksaan->obat }}</td> --}}
         </tr>
         @endforeach
       </tbody>
@@ -192,6 +196,7 @@
   <footer>
     <h2>Semoga Lekas Sembuh</h2>
   </footer>
+  <hr>
 </body>
 
 </html>
