@@ -7,6 +7,7 @@ use App\Models\Dokter;
 use App\Models\Pasien;
 use App\Models\Pemeriksaan;
 use App\Models\Perjanjian;
+use App\Models\PasienScreening;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -20,18 +21,34 @@ class DokterController extends Controller
    */
   public function index()
   {
-    $pasien = Pasien::all();
-    $dokter = Dokter::all();
-    // $pasien = Pasien::with(['dokter'])->get();
-    // $pasien = Dokter::with('pasiens')->where('nama_dokter', Auth::user()->name)->get()->collect();
-    $obat = Obat::with('pasien')->get();
+    $dokterId = Auth::id();
+
+    // Ambil data screenings berdasarkan dokter yang login
+    $screenings = PasienScreening::where('dokter_id', $dokterId)->get();
+
     $data = [
-      'pasiens' => $pasien,
-      'dokters' => $dokter,
-      'active' => 'dokter'
+        'screenings' => $screenings,
+        'active' => 'dokter'
     ];
-    return view('dokter.index', $data);
+
+    return view('dokter.dashboard', $data);
   }
+
+  public function konsultasi()
+  {
+    $dokterId = Auth::id();
+
+    // Ambil data screenings berdasarkan dokter yang login
+    $screenings = PasienScreening::where('dokter_id', $dokterId)->get();
+
+    $data = [
+        'screenings' => $screenings,
+        'active' => 'dokter'
+    ];
+
+    return view('dokter.konsultasi.index', $data);
+  }
+  
 
   /**
    * Show the form for creating a new resource.

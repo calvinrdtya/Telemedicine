@@ -32,7 +32,7 @@ class PraktekController extends Controller
       'konsultasis' => $konsultasi,
       'active' => 'perjanjian'
     ];
-    return view('praktek.index', $data);
+    return view('front.pasien.konsultasi.index', $data);
   }
 
   /**
@@ -51,7 +51,7 @@ class PraktekController extends Controller
       'konsultasis' => $konsultasi,
       'active' => 'perjanjian'
     ];
-    return view('praktek.create', $data);
+    return view('front.pasien.konsultasi.create', $data);
   }
 
   /**
